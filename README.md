@@ -1,5 +1,6 @@
 # NPM 包 说明
 > - 该包只是测试包
+> - https://github.com/guanruihua/rh-ts-hi
 > - 工具包
 
 ## 使用前说明

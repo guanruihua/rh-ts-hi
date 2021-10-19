@@ -21,7 +21,8 @@
     "lorem-ipsum": "^2.0.4",
     "nodemon": "^2.0.13",
     "canvas":"^2.8.0",
-    "cors":"2.8.5"
+    "cors":"2.8.5",
+    "node-xlsx": "^0.17.1"
   },
   "author": "ruihuag",
   "license": "ISC"
