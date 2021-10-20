@@ -14,14 +14,108 @@
 	"lorem-ipsum": "^2.0.4",
 	"nodemon": "^2.0.13",
 	"canvas":"^2.8.0",
-	"cors":"2.8.5"
+	"cors":"2.8.5",
+	"node-xlsx": "^0.17.1"
 ```
 ## 使用
 ```js
 const { apiServer } = require('rh-ts-hi');
 apiServer()
 ```
+
 ## 方法说明
+###  locales
+> toJs 和 toXlsx 不可以同时设置为true, 每次执行设置一个即可
+> 需要自己定制 一些相关配置, 需要重写BaseConfig方法
+> 若还需要更加自定制, 则需要重写 readXlsxtToWriteFile, readlocalesToXlsx 方法
+
+```ts
+const configList: any[] = [
+	{
+		xlsxTolocales_entryPath: './test/mutilLang.xlsx',
+		xlsxTolocales_selectSheet: 1,
+		xlsxTolocales_outputPath: './test/locales/messageTemplate/',
+		localesToXlsx_entryPath: './test/locales/messageTemplate/',
+		localesToXlsx_outputPath: './test/locales/messageTemplate/locales.xlsx',
+		// toJs: true,
+		toXlsx: true,
+	},
+	{
+		xlsxTolocales_entryPath: './test/mutilLang.xlsx',
+		// xlsxTolocales_entryPath: './locales/recallClass/locales.xlsx',
+		xlsxTolocales_selectSheet: 0,
+		xlsxTolocales_outputPath: './test/locales/recallClass/',
+		localesToXlsx_entryPath: './test/locales/recallClass/',
+		localesToXlsx_outputPath: './test/locales/recallClass/locales.xlsx',
+		// toJs: true,
+		toXlsx: true,
+	},
+]
+
+function run(): void {
+	const { BaseConfig, readXlsxtToWriteFile, readlocalesToXlsx, mkdirs } = require('../lib').locales
+
+	new Promise((resolve: (val: any) => void): void => {
+		const configs: any[] = []
+		configList.forEach((item: any) => {
+			const {
+				toJs = false, toXlsx = false,
+				// xlsx => js
+				xlsxTolocales_entryPath,
+				xlsxTolocales_selectSheet,
+				xlsxTolocales_outputPath,
+				// js => xlsx
+				localesToXlsx_entryPath,
+				localesToXlsx_outputPath,
+			} = item;
+
+			const config: any = BaseConfig(
+				xlsxTolocales_entryPath,
+				xlsxTolocales_selectSheet,
+				xlsxTolocales_outputPath,
+				localesToXlsx_entryPath,
+				localesToXlsx_outputPath,
+			)
+			xlsxTolocales_outputPath && mkdirs(xlsxTolocales_outputPath);
+			localesToXlsx_entryPath && mkdirs(localesToXlsx_entryPath);
+			configs.push({
+				...config, toJs, toXlsx
+			});
+
+		})
+		resolve(configs)
+	})
+		.then((configs: any[]): Promise<any> => {
+			return new Promise((resolve: (val: any) => void): void => {
+				configs.forEach((item: any): void => {
+					const { toJs = false, xlsxTolocales, } = item;
+
+					// 生成 js 文件
+					toJs && readXlsxtToWriteFile(xlsxTolocales)
+				})
+				resolve(configs)
+			})
+		})
+		.then((configs: any[]): Promise<any> => {
+			return new Promise((resolve: (val: any) => void): void => {
+				configs.forEach((item: any): void => {
+					const { toXlsx = false, localesToXlsx } = item;
+
+					// 生成 xlsx 文件
+					toXlsx && readlocalesToXlsx(localesToXlsx)
+				})
+				resolve(configs)
+			})
+		})
+		.catch((err: any): void => {
+			console.log('生成失败', err)
+		})
+
+}
+
+run();
+```
+
 ### `apiServer([host[, port[, callback]]])`
 > 不传就会是默认值
 > callback(app): 这个app就是express的app, 方便开发者进行二次修改
@@ -39,6 +133,6 @@ apiServer()
 > http://localhost:3000/3p,
 
 ## 版本
- 
+- 1.0.9 : 添加 locales 方法
 - 1.0.5 : 添加虚拟接口服务器
 - 1.0.4-beta : 添加虚拟接口服务器测试

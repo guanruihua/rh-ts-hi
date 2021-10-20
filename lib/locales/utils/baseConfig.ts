@@ -1,5 +1,3 @@
-const { mkdirs } = require('./mkdirPath')
-
 module.exports = (
 	// xlsx => js
 	xlsxTolocales_entryPath: string,
@@ -9,10 +7,9 @@ module.exports = (
 	localesToXlsx_entryPath: string,
 	localesToXlsx_outputPath: string
 ): { [k: string]: any } => {
-	xlsxTolocales_outputPath && mkdirs(xlsxTolocales_outputPath);
-	localesToXlsx_entryPath && mkdirs(localesToXlsx_entryPath);
 
-	return {
+
+	let result: any = {
 		xlsxTolocales: {
 			entry: {
 				// path: './mutilLang.xlsx',
@@ -84,4 +81,6 @@ module.exports = (
 			}
 		},
 	}
+
+	return result;
 }

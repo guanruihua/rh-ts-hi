@@ -1,14 +1,15 @@
-const fs = require('fs')
 
 
-export function mkdir(pos: number, dirArray: any[], _callback: any): void {
+function mkdir(pos: number, dirArray: any[], _callback: any): void {
+	const fs = require('fs')
+
 	let len: number = dirArray.length;
 	if (pos >= len || pos > 10) {
 		_callback();
 		return;
 	}
 	let currentDir: string = '';
-	for (var i = 0; i <= pos; i++) {
+	for (let i: number = 0; i <= pos; i++) {
 		if (i != 0) currentDir += '/';
 		currentDir += dirArray[i];
 	}
@@ -30,7 +31,9 @@ export function mkdir(pos: number, dirArray: any[], _callback: any): void {
 }
 
 export function mkdirs(dirpath: string, _callback: any): void {
-	var dirArray: string[] = dirpath.split('/');
+	const fs = require('fs')
+	let dirArray: string[] = dirpath.split('/');
+
 	fs.exists(dirpath, function (exists: boolean): void {
 		if (!exists) {
 			mkdir(0, dirArray, function (): void {
@@ -43,5 +46,3 @@ export function mkdirs(dirpath: string, _callback: any): void {
 		}
 	});
 }
-
-// exports.mkdirs = mkdirs

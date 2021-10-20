@@ -1,9 +1,6 @@
-const xlsx = require("node-xlsx");
-const fs = require("fs");
-const { writeFile } = require('./index')
+const readXlsx = (path: string, callback?: any): any => {
+	const xlsx = require("node-xlsx");
 
-
-const readXlsx = (path, callback) => {
 	try {
 		const data = xlsx.parse(path)
 		callback && callback(data)
@@ -19,16 +16,18 @@ const readXlsx = (path, callback) => {
 exports.readXlsx = readXlsx;
 
 // 处理数据
-function handleDataByConfig(entry) {
+function handleDataByConfig(entry: any) {
 	const { selectSheet = 0, dataIndex = {}, format = {} } = entry
 	const { useHead = true, dataFormat = {} } = format;
-	let output_DATA = {};
+	let output_DATA: any = {};
 
 	/* 处理数据 start */
-	const DATA = readXlsx(entry.path)[selectSheet].data
+	const DATA: any[] = readXlsx(entry.path)[selectSheet].data
 	if (!format.useHead) delete DATA[0] // 是否去除首行
 
-	DATA.map((item) => {
+	// console.log(readXlsx(entry.path))
+
+	DATA.forEach((item: any): void => {
 		for (let index in dataIndex) {
 			let [key, val] = dataIndex[index];
 			if (!output_DATA[index]) output_DATA[index] = {};
@@ -40,7 +39,6 @@ function handleDataByConfig(entry) {
 			} else {
 				output_DATA[index][item[key]] = item[val]
 			}
-
 		}
 	})
 	/* 处理数据 end */
@@ -49,7 +47,8 @@ function handleDataByConfig(entry) {
 }
 
 // 写出为文件
-function writeFileByConfig(output_DATA, output) {
+function writeFileByConfig(output_DATA: any, output: any): void {
+	const { writeFile } = require('./writeFile')
 	const { path = './', filename = {}, format = {} } = output
 	const { allDataFormat = "", dataFormat = {} } = format
 
@@ -87,7 +86,7 @@ function writeFileByConfig(output_DATA, output) {
 }
 
 
-exports.readXlsxtToWriteFile = (config) => {
+exports.readXlsxtToWriteFile = (config: any): void => {
 	const { entry, output } = config
 
 	let output_DATA = handleDataByConfig(entry);;
