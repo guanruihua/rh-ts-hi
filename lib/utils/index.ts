@@ -5,3 +5,5 @@ exports.add = function(a:number, b:number): number{
 exports.sub = function(a: number, b: number): number{
 	return a - b;
 }
+
+exports.BlockingQueue = require('./BlockQueue')

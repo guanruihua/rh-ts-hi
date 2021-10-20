@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "ts-node ./test",
+    "test_locales": "ts-node ./test/locales_test",
+    "test_blockQueue": "ts-node ./test/blockQueue_test",
     "pub": "npm publish"
   },
   "keywords": [

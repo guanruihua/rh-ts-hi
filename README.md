@@ -1,5 +1,5 @@
 # NPM 包 说明
-> - 该包只是测试包
+> - 该包只是测试包, 用于测试工具方法的测试包
 > - https://github.com/guanruihua/rh-ts-hi
 > - 工具包
 
