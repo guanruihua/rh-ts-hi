@@ -1,6 +1,6 @@
 {
   "name": "rh-ts-hi",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "create npm package with ts",
   "main": "./dist",
   "scripts": {
@@ -8,6 +8,7 @@
     "test": "ts-node ./test",
     "test_locales": "ts-node ./test/locales_test",
     "test_blockQueue": "ts-node ./test/blockQueue_test",
+    "test_apiServer": "ts-node ./test/apiServer_test",
     "pub": "npm publish"
   },
   "keywords": [
@@ -22,8 +23,9 @@
     "express": "^4.17.1",
     "lorem-ipsum": "^2.0.4",
     "nodemon": "^2.0.13",
-    "canvas":"^2.8.0",
-    "cors":"2.8.5",
+    "canvas": "^2.8.0",
+    "cors": "2.8.5",
+    "body-parser": "^1.19.0",
     "node-xlsx": "^0.17.1"
   },
   "author": "ruihuag",
